@@ -1,5 +1,7 @@
 import streamlit as st
 
+st.title("Sign Up")
+
 email = st.text_input("Email")
 st.write(email)
 
