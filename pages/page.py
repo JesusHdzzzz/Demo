@@ -4,9 +4,9 @@ import pandas as pd
 
 st.title("Your Budget")
 
-left, center, right = st.columns(3)
+left, center, right = st.columns([2, 1, 1])
 
-with right:
+with left:
     random_x = [100, 2000, 550]
     names = ['A', 'B', 'C']
     
