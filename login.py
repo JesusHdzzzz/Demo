@@ -12,4 +12,4 @@ with center:
 
     switch_signup = st.button('Sign Up')
     if switch_signup:
-        st.switch_page("pages/page.py")
+        st.switch_page("pages/signup_page.py")
