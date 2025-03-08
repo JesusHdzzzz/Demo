@@ -1,21 +1,18 @@
-# CORRECT IMPORTS
-import google.generativeai as genai
 import streamlit as st
+import os
+from google.generativeai import GenerativeModel
 
-# Initialize Gemini client
-genai.configure(api_key=st.secrets["GEMINI_API_KEY"])  # Use Streamlit secrets for security!
+os.environ.get("AIzaSyDwVFHhjS6X8wxoLmFgi7Y4oq2gPBEatMY")
 
-st.write("""
-# My first app
-I have deployed my first app using Streamlit*
-""")
+model = GenerativeModel('gemini-pro')
 
-# Generate response
-model = genai.GenerativeModel('gemini-pro')  # Use valid model name
-response = model.generate_content("Explain how AI works")
+st.title("Gemini Chatbot")
 
-# Display output safely
-try:
-    st.write(response.text)
-except Exception as e:
-    st.error(f"Error generating response: {e}")
+prompt = st.text_input("Enter your prompt:")
+
+if prompt:
+    # Send prompt to Gemini API
+    response = model.generate_content(prompt)
+
+    # Display response
+    st.write("Gemini:", response.text)
