@@ -2,17 +2,11 @@ import streamlit as st
 import os
 from google.generativeai import GenerativeModel
 
-os.environ.get("AIzaSyDwVFHhjS6X8wxoLmFgi7Y4oq2gPBEatMY")
+st.title("Testing input")
 
-model = GenerativeModel('gemini-pro')
+prompt = st.text_input("Enter your prompt: ")
 
-st.title("Gemini Chatbot")
-
-prompt = st.text_input("Enter your prompt: Explain how AI works")
-
-if prompt:
-    # Send prompt to Gemini API
-    response = model.generate_content(prompt)
-
-    # Display response
-    st.write("Gemini:", response.text)
+if len(prompt) > 10: # Check if prompt:
+    st.write("Prompt is longre than 10 characters")
+else:
+    st.write("Prompt is shorter than 10 characters")
