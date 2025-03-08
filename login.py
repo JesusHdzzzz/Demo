@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 
-st.title("THE BEST BUDGETING APP!!")
+st.title("THE BEST BUDGETING APP!!!")
 
 switch_login = st.button('pages/Login')
 if switch_login:
