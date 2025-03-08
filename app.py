@@ -1,7 +1,9 @@
-import google.generateai as genai
+# CORRECT IMPORTS
+import google.generativeai as genai
 import streamlit as st
 
-genai.configure(api_key="AIzaSyDwVFHhjS6X8wxoLmFgi7Y4oq2gPBEatMY")
+# Initialize Gemini client
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])  # Use Streamlit secrets for security!
 
 st.write("""
 # My first app
