@@ -1,16 +1,19 @@
-from google import genai
+import google.generateai as genai
 import streamlit as st
 
-client = genai.Client(api_key="AIzaSyDwVFHhjS6X8wxoLmFgi7Y4oq2gPBEatMY")
+genai.configure(api_key="AIzaSyDwVFHhjS6X8wxoLmFgi7Y4oq2gPBEatMY")
 
 st.write("""
 # My first app
 I have deployed my first app using Streamlit*
 """)
 
-response = client.models.generate_content(
-    model="gemini-2.0-flash",
-    contents="Explain how AI works",
-)
+# Generate response
+model = genai.GenerativeModel('gemini-pro')  # Use valid model name
+response = model.generate_content("Explain how AI works")
 
-st.write(response.text)
+# Display output safely
+try:
+    st.write(response.text)
+except Exception as e:
+    st.error(f"Error generating response: {e}")
