@@ -8,7 +8,7 @@ if not api_key:
     st.error("API key is not set. Please set the API key in your environment variables.")
 else:
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-1.5-flash', system_instruction="Only answer questions about finance, refuse unrelated questions.")
 
 st.title("Testing inputs")
 
