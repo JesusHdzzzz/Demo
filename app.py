@@ -8,7 +8,7 @@ model = GenerativeModel('gemini-pro')
 
 st.title("Gemini Chatbot")
 
-prompt = st.text_input("Enter your prompt:")
+prompt = st.text_input("Enter your prompt: Explain how AI works")
 
 if prompt:
     # Send prompt to Gemini API
