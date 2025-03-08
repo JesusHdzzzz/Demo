@@ -3,6 +3,10 @@ import os
 
 st.title("THE BEST BUDGETING APP!!")
 
-switch = st.button('Login')
-if switch:
+switch_login = st.button('Login')
+if switch_login:
+    st.switch_page("pages/page.py")
+
+switch_signup = st.button('Sign Up')
+if switch_signup:
     st.switch_page("pages/page.py")
