@@ -2,5 +2,5 @@ import streamlit as st
 
 st.write("""
 # My first app
-Hello *World*
+I have deployed my first app using Streamlit*
 """)
