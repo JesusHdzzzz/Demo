@@ -51,6 +51,7 @@ with login_tab:
                     if bcrypt.checkpw(password.encode('utf-8'), user["password_hash"]):
                         st.session_state.logged_in = True
                         st.session_state.user_email = email
+                        #st.session_state.userid = usrID
                         st.success("Login successful!")
                         st.switch_page("pages/app.py")  # Update with your main page path
                     else:
