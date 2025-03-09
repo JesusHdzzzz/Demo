@@ -32,9 +32,19 @@ def init_connection():
 
 client = init_connection()
 db = client.HackathonX
+users_collection = db.users
 finances_collection = db.finances
 
 st.title("Your Financial Info")
+
+if "user_email" not in st.session_state:
+    st.error("Please log in first.")
+    st.stop()
+
+current_user = users_collection.find_one({"email": st.session_state.user_email})
+if not current_user:
+    st.error("User not found.")
+    st.stop()
 
 with st.form("fincancial_info"):
     st.subheader("Income")
@@ -73,7 +83,8 @@ with st.form("fincancial_info"):
                 total_spending = sum(expenses.values())
                 remaining = income_val - total_spending
 
-                user_data = {
+                financial_data = {
+                    "user_id": current_user["_id"],
                     "income": income_val,
                     "expenses": expenses,
                     "total_spending": total_spending,
@@ -81,7 +92,7 @@ with st.form("fincancial_info"):
                     #"created_at": datetime.datetime.utcnow()
                 }
 
-                result = finances_collection.insert_one(user_data)
+                result = finances_collection.insert_one(financial_data)
 
                 st.success(f"Data saved successfully! ID: {result.inserted_id}")
                 st.balloons()
