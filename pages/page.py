@@ -86,8 +86,10 @@ with center:
     fig = px.pie(values=random_x, names=names)
     st.plotly_chart(fig, theme=None)
 
+    income = user_match["income"]
     total = user_match["total_spending"]
     remaining = user_match["remaining"]
 
+    st.write(f"Income: ${income}")
     st.write(f"Total Expenditure: ${total}")
     st.write(f"Money Remaining: ${remaining}")
