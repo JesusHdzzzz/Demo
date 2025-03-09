@@ -18,6 +18,7 @@ except ConnectionError as e:
 
 db = client.HackathonX
 users_collection = db.users
+finances_collection = db.finances
 
 st.title("Login / Sign Up")
 
@@ -49,7 +50,7 @@ with login_tab:
                         st.session_state.logged_in = True
                         st.session_state.user_email = email
                         st.success("Login successful!")
-                        st.switch_page("pages/app.py")  # Update with your main page path
+                        st.switch_page("pages/page.py")  # Update with your main page path
                     else:
                         st.error("Incorrect password")
 
@@ -78,8 +79,9 @@ with signup_tab:
                     "password_hash": hashed_pw,
                     "created_at": datetime.datetime.utcnow()
                 })
-                
-                st.success("Account created successfully! Please login.")
+
+                st.success("Account created successfully! Please login")
+
                 
             except ValueError as e:
                 st.error(str(e))

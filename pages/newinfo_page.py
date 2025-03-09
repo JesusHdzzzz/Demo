@@ -79,7 +79,8 @@ with st.form("fincancial_info"):
 
                 result = finances_collection.insert_one(financial_data)
 
-                st.success(f"Data saed successfully! ID: {result.inserted_id}")
+                st.success(f"Data saved successfully! ID: {result.inserted_id}")
+                st.switch_page("page.py")
                 st.balloons()
 
             except ValueError:
