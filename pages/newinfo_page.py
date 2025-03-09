@@ -14,25 +14,25 @@ st.title("Your Financial Info")
 
 with st.form("fincancial_info"):
     st.subheader("Income")
-    income = st.text_input("Your monthly income estimate")
+    income = float(st.text_input("Your monthly income estimate"))
 
     st.subheader("Monthly Expenditures")
     st.caption("Note: Enter '0' if none spent in area.")
-    food = st.text_input("Food")
-    housing = st.text_input("Rent/Mortgage")
-    utilities = st.text_input("Utilities")
-    transportation = st.text_input("Transportation")
-    entertainment = st.text_input("Entertainment")
-    other = st.text_input("Other")
+    food = float(st.text_input("Food"))
+    housing = float(st.text_input("Rent/Mortgage"))
+    utilities = float(st.text_input("Utilities"))
+    transportation = float(st.text_input("Transportation"))
+    entertainment = float(st.text_input("Entertainment"))
+    other = float(st.text_input("Other"))
 
     submitted = st.form_submit_button("Done")
 
     if submitted:
         if not all([income, food, housing, utilities, transportation, entertainment, other]):
             st.error("Please fill in all fields.")
-        elif isinstance(float(food), float) == False or isinstance(float(housing), float) == False or \
-            isinstance(float(utilities), float) == False or isinstance(float(transportation), float) == False or \
-            isinstance(float(entertainment), float) == False or isinstance(float(other), float) == False:
+        elif isinstance(food, float) == False or isinstance(housing, float) == False or \
+            isinstance(utilities, float) == False or isinstance(transportation, float) == False or \
+            isinstance(entertainment, float) == False or isinstance(other, float) == False:
             st.error("Please enter only numbers.")
         else:
             total_spending = food + housing + utilities + transportation + entertainment + other
