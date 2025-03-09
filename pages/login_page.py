@@ -34,7 +34,7 @@ with st.form("user_login_form"):
                     st.session_state.logged_in = True
                     st.session_state.user_email = email
                     # Redirect to main app page
-                    st.switch_page("pages/app.py")
+                    st.switch_page("pages/page.py")
                 else:
                     st.error("Incorrect password")
 
