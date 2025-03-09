@@ -20,7 +20,7 @@ user_expenses = user_match["expenses"]
 
 st.title("Your Budget")
 
-left, center, right = st.columns([0.5, 3, 0.5], vertical_alignment="center")
+left, center, right = st.columns([0.5, 3, 0.5], vertical_alignment="top")
 
 #Sidebar Chat START
 api_key = st.secrets["GEMINI_API_KEY"]["api_key"]
@@ -79,11 +79,12 @@ with st.sidebar:
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
+# Pie Chart
 with center:
-    random_x = [user_expenses["food"], user_expenses["housing"], user_expenses["utilities"], user_expenses["transportation"], user_expenses["entertainment"], user_expenses["other"]]
+    all_expenses = [user_expenses["food"], user_expenses["housing"], user_expenses["utilities"], user_expenses["transportation"], user_expenses["entertainment"], user_expenses["other"]]
     names = ['Food', 'Housing', 'Utilities', 'Transportation', 'Entertainment', 'Other']
     
-    fig = px.pie(values=random_x, names=names)
+    fig = px.pie(values=all_expenses, names=names)
     st.plotly_chart(fig, theme=None)
 
     income = user_match["income"]
@@ -93,3 +94,12 @@ with center:
     st.write(f"Income: ${income}")
     st.write(f"Total Expenditure: ${total}")
     st.write(f"Money Remaining: ${remaining}")
+
+# Edit budget & Logout buttons
+with right:
+    if st.button("Logout", type="primary"):
+        st.session_state.clear()
+        st.switch_page("login_page.py")
+        st.rerun()
+    if st.button("Edit Budget"):
+        st.switch_page("pages/newinfo_page.py")
