@@ -24,13 +24,6 @@ st.title("Your Budget")
 
 left, center, right = st.columns([2, 1, 1])
 
-with left:
-    random_x = [user_expenses["food"], user_expenses["housing"], user_expenses["utilities"], user_expenses["transportation"], user_expenses["entertainment"], user_expenses["other"]]
-    names = ['Food', 'Housing', 'Utilities', 'Transportation', 'Entertainment', 'Other']
-    
-    fig = px.pie(values=random_x, names=names)
-    st.plotly_chart(fig, theme=None)
-
 #Sidebar Chat START
 api_key = st.secrets["GEMINI_API_KEY"]["api_key"]
 tlsCAFile=certifi.where()
