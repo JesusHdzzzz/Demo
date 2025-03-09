@@ -9,7 +9,13 @@ def init_connection():
     return MongoClient(st.secrets["MONGODB_URI"]["uri"],
     tlsCAFile=certifi.where())
 
-client = init_connection()
+try:
+    client = init_connection()
+    #st.toast("Connection successful!", icon="✅")
+except ConnectionError as e:
+    #st.toast(f"Connection failed: {str(e)}", icon="🚫")
+    st.stop()
+
 db = client.HackathonX
 users_collection = db.users
 
@@ -48,9 +54,10 @@ with login_tab:
                     st.error("User not found! Please sign up first.")
                 else:
                     # Verify password
-                    if user["password"] == password:
+                    if bcrypt.checkpw(password.encode('utf-8'), user["password_hash"]):
                         st.session_state.logged_in = True
                         st.session_state.user_email = email
+                        #st.session_state.userid = usrID
                         st.success("Login successful!")
                         st.switch_page("pages/app.py")  # Update with your main page path
                     else:
@@ -76,7 +83,6 @@ with signup_tab:
                 
                 # Hash password with bcrypt
                 hashed_pw = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
-                
                 users_collection.insert_one({
                     "email": new_email,
                     "password_hash": hashed_pw,

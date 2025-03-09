@@ -4,11 +4,25 @@ import pandas as pd
 import certifi
 import google.generativeai as genai
 
+@st.cache_resource
+def init_connection():
+    return MongoClient(st.secrets["MONGODB_URI"]["uri"],
+    tlsCAFile=certifi.where())
+
+client = init_connection()
+db = client.HackathonX
+users_collection = db.users
+finance_collection = db.finances
+
+current_user = users_collection.find_one({"email": st.session_state.user_email})
+user_match = finance_collection.find_one({"user_id": current_user["_id"]})
+user_expenses = user_match["expenses"]
+
+st.write(user_expenses)
+
 st.title("Your Budget")
 
 left, center, right = st.columns([2, 1, 1])
-
-
 
 #Sidebar Chat START
 api_key = st.secrets["GEMINI_API_KEY"]["api_key"]

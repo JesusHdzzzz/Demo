@@ -3,37 +3,23 @@ from pymongo import MongoClient
 import certifi
 import google.generativeai as genai
 
+connection_status = st.empty()
+
 @st.cache_resource
 def init_connection():
-    try:
-        # Initialize connection with diagnostics
-        client = MongoClient(
-            st.secrets["MONGODB_URI"]["uri"],
-            tlsCAFile=certifi.where(),
-            serverSelectionTimeoutMS=5000  # Fail fast for quicker feedback
-        )
-        
-        # Immediate connection test
-        client.admin.command('ping')
-        st.toast("✅ Successfully connected to MongoDB!", icon="🔗")
-        return client
-        
-    except Exception as e:
-        st.error(f"""
-        **MongoDB Connection Failed**
-        Error: {str(e)}
-        
-        Troubleshooting Steps:
-        1. Verify MongoDB URI in secrets
-        2. Check network access in Atlas
-        3. Confirm internet connection
-        """)
-        st.stop()  # Halt entire app if connection fails
+    return MongoClient(st.secrets["MONGODB_URI"]["uri"],
+    tlsCAFile=certifi.where())  # Halt entire app if connection fails
 
-client = init_connection()
+try:
+    client = init_connection()
+    #st.toast("Connection successful!", icon="✅")
+except ConnectionError as e:
+    #st.toast(f"Connection failed: {str(e)}", icon="🚫")
+    st.stop()
+
 db = client.HackathonX
-users_collection = db.users
 finances_collection = db.finances
+users_collection = db.users
 
 st.title("Your Financial Info")
 
@@ -101,36 +87,3 @@ with st.form("fincancial_info"):
                 st.error("Please enter a valid number in all fields.")
             except Exception as e:
                 st.error(f"An error occurred: {e}")
-#Sidebar Chat START
-api_key = st.secrets["GEMINI_API_KEY"]["api_key"]
-tlsCAFile=certifi.where()
-if not api_key:
-    st.error("API key is not set. Please set the API key in your environment variables.")
-else:
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-1.5-flash', system_instruction="Only answer questions about finance, refuse unrelated questions.")
-
-st.title("ChatAI")
-with st.sidebar:
-    st.header("Chat with AI")
-    # Initialize messages
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
-
-    for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
-            st.write(msg["content"])
-
-    prompt = st.chat_input("Ask a finance question: ")
-
-    if prompt:
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.write(prompt)
-        try:
-            response = model.generate_content(prompt)
-            st.session_state.messages.append({"role": "bot", "content": response.text})
-            with st.chat_message("bot"):
-                st.write(response.text)
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
