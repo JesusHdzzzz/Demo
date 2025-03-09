@@ -77,10 +77,11 @@ with st.form("fincancial_info"):
                     #"created_at": datetime.datetime.utcnow()
                 }
 
+                # update finances collection from default values to new values
                 result = finances_collection.insert_one(financial_data)
 
                 st.success(f"Data saved successfully! ID: {result.inserted_id}")
-                st.switch_page("page.py")
+                st.switch_page("pages/page.py")
                 st.balloons()
 
             except ValueError:
