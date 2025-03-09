@@ -33,7 +33,7 @@ with st.form("user_form"):
             try:
                 result = users_collection.insert_one(user_data)
                 st.success(f"User created! ID: {result.inserted_id}")
-                st.switch_page("pages/login_page.py")
+                st.switch_page("pages/newinfo_page.py")
             except Exception as e:
                 st.error(f"Error saving to database: {e}")
 
