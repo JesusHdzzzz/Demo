@@ -22,13 +22,6 @@ st.title("Your Budget")
 
 left, center, right = st.columns([2, 1, 1])
 
-with left:
-    expenses = [100, 2000, 550]
-    names = ['A', 'B', 'C']
-    
-    fig = px.pie(values=random_x, names=names)
-    st.plotly_chart(fig, theme=None)
-
 #Sidebar Chat START
 api_key = st.secrets["GEMINI_API_KEY"]["api_key"]
 tlsCAFile=certifi.where()
@@ -36,11 +29,13 @@ if not api_key:
     st.error("API key is not set. Please set the API key in your environment variables.")
 else:
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-1.5-flash', system_instruction="Only answer questions about finance, refuse unrelated questions.")
+    model = genai.GenerativeModel('gemini-1.5-flash', system_instruction="You are a finance instructor. Only answer questions about finance, refuse unrelated questions.")
 
 with st.sidebar:
     st.header("Chat with AI")
     # Initialize messages
+    if "balance" not in st.session_state:
+        st.session_state.balance = 20
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
@@ -48,16 +43,45 @@ with st.sidebar:
         with st.chat_message(msg["role"]):
             st.write(msg["content"])
 
-    prompt = st.chat_input("Ask a finance question: ")
+prompt = st.chat_input("Ask a finance question: ")
 
+with st.sidebar:
     if prompt:
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.write(prompt)
+        system_instruction= f"""You are a finance instructor. 
+                                Only answer questions about finance, refuse unrelated questions. 
+                                If a user mention spending money, record that value and ONLY that value as a negative value. 
+                                If a user mention gaining money, record that value and ONLY that value as a postive value. 
+                                If a user ask about their balance, return zero as a int. 
+                                If no spending is mentioned, respond normally."""
         try:
-            response = model.generate_content(prompt)
-            st.session_state.messages.append({"role": "bot", "content": response.text})
+            response = model.generate_content(
+                system_instruction + f"\nUser input: {prompt}"
+            ).text.strip()
+
+            # ✅ Step 8: Process AI's response & update balance if money is spent
+            try:
+                spent_amount = float(response)  # Convert response to number
+                st.session_state.balance += spent_amount  # Deduct from balance
+                if spent_amount == 0:
+                    ai_response = f"Your current balance is **${st.session_state.balance}**."
+                else: 
+                    ai_response = f"Got it. Your new balance is **${st.session_state.balance}**."
+            except ValueError:
+                ai_response = response  # If no number was detected, return normal AI response
+
+            st.session_state.messages.append({"role": "bot", "content": ai_response})
             with st.chat_message("bot"):
-                st.write(response.text)
+                st.write(ai_response)
+
         except Exception as e:
             st.error(f"An error occurred: {e}")
+
+with left:
+    random_x = [st.session_state.balance, 2000, 550]
+    names = ['BALANCE', 'B', 'C']
+    
+    fig = px.pie(values=random_x, names=names)
+    st.plotly_chart(fig, theme=None)

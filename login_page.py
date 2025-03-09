@@ -9,7 +9,13 @@ def init_connection():
     return MongoClient(st.secrets["MONGODB_URI"]["uri"],
     tlsCAFile=certifi.where())
 
-client = init_connection()
+try:
+    client = init_connection()
+    #st.toast("Connection successful!", icon="✅")
+except ConnectionError as e:
+    #st.toast(f"Connection failed: {str(e)}", icon="🚫")
+    st.stop()
+
 db = client.HackathonX
 users_collection = db.users
 
