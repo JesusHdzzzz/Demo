@@ -19,9 +19,13 @@ with st.sidebar:
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
-            st.write(msg["content"])
+#Chat container
+    chat_container = st.container()
+    with chat_container:
+
+        for msg in (st.session_state.messages):
+            with st.chat_message(msg["role"]):
+                st.write(msg["content"])
 
     prompt = st.chat_input("Ask a finance question: ")
 
@@ -29,20 +33,22 @@ with st.sidebar:
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.write(prompt)
+        # Get conversation context
+        conversation_context = ""
+        for msg in st.session_state.messages:
+            conversation_context += f"{msg['role']}: {msg['content']}\n"
+
+        # Generate response
+
         try:
-            response = model.generate_content(prompt)
+            response = model.generate_content(conversation_context)
+
             st.session_state.messages.append({"role": "bot", "content": response.text})
+
             with st.chat_message("bot"):
                 st.write(response.text)
+                
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
-# if len(prompt) > 10: # Check if prompt:
-#     # st.write("Prompt is longer than 10 characters")
-#     try:
-#         response = model.generate_content(prompt)
-#         st.write(response.text)
-#     except Exception as e:
-#         st.error(f"An error occurred: {e}")
-# else:
-#     st.write("Prompt is shorter than 10 characters")
+#Sidebar Chat END
