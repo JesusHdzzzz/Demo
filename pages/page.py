@@ -18,13 +18,15 @@ current_user = users_collection.find_one({"email": st.session_state.user_email})
 user_match = finance_collection.find_one({"user_id": current_user["_id"]})
 user_expenses = user_match["expenses"]
 
+st.write(user_expenses)
+
 st.title("Your Budget")
 
 left, center, right = st.columns([2, 1, 1])
 
 with left:
-    random_x = [100, 2000, 550]
-    names = ['A', 'B', 'C']
+    random_x = [user_expenses["food"], user_expenses["housing"], user_expenses["utilities"], user_expenses["transportation"], user_expenses["entertainment"], user_expenses["other"]]
+    names = ['Food', 'Housing', 'Utilities', 'Transportation', 'Entertainment', 'Other']
     
     fig = px.pie(values=random_x, names=names)
     st.plotly_chart(fig, theme=None)
