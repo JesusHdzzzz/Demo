@@ -1,10 +1,11 @@
 import streamlit as st
 from pymongo import MongoClient
-from datetime import datetime
+import certifi
 
 @st.cache_resource
 def init_connection():
-    return MongoClient(st.secrets["MONGODB_URI"]["uri"])
+    return MongoClient(st.secrets["MONGODB_URI"]["uri"],
+    tlsCAFile=certifi.where())
 
 client = init_connection()
 db = client.HackathonX
