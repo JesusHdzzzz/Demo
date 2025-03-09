@@ -19,11 +19,9 @@ current_user = users_collection.find_one({"email": st.session_state.user_email})
 user_match = finance_collection.find_one({"user_id": current_user["_id"]})
 user_expenses = user_match["expenses"]
 
-st.write(user_expenses)
-
 st.title("Your Budget")
 
-left, center, right = st.columns([2, 1, 1])
+left, center, right = st.columns([0.5, 3, 0.5], vertical_alignment="center")
 
 #Sidebar Chat START
 api_key = st.secrets["GEMINI_API_KEY"]["api_key"]
@@ -82,9 +80,17 @@ with st.sidebar:
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
-with left:
-    random_x = [st.session_state.balance, 2000, 550]
-    names = ['BALANCE', 'B', 'C']
+with center:
+    random_x = [user_expenses["food"], user_expenses["housing"], user_expenses["utilities"], user_expenses["transportation"], user_expenses["entertainment"], user_expenses["other"]]
+    names = ['Food', 'Housing', 'Utilities', 'Transportation', 'Entertainment', 'Other']
     
     fig = px.pie(values=random_x, names=names)
     st.plotly_chart(fig, theme=None)
+
+    income = user_match["income"]
+    total = user_match["total_spending"]
+    remaining = user_match["remaining"]
+
+    st.write(f"Income: ${income}")
+    st.write(f"Total Expenditure: ${total}")
+    st.write(f"Money Remaining: ${remaining}")
