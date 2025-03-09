@@ -85,13 +85,15 @@ with center:
     all_expenses = [user_expenses["food"], user_expenses["housing"], user_expenses["utilities"], user_expenses["transportation"], user_expenses["entertainment"], user_expenses["other"]]
     names = ['Food', 'Housing', 'Utilities', 'Transportation', 'Entertainment', 'Other']
     
-    fig = px.pie(values=all_expenses, names=names)
-    st.plotly_chart(fig, theme=None)
-
+    if sum(all_expenses) == 0:
+        fig = px.pie(values=[1], names=["None"])
+        st.plotly_chart(fig, theme=None)
+    else:
+        fig = px.pie(values=all_expenses, names=names)
+        st.plotly_chart(fig, theme=None)
     income = user_match["income"]
     total = user_match["total_spending"]
     remaining = user_match["remaining"]
-
     st.write(f"Income: ${income}")
     st.write(f"Total Expenditure: ${total}")
     st.write(f"Money Remaining: ${remaining}")
