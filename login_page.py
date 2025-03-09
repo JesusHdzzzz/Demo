@@ -80,6 +80,28 @@ with signup_tab:
                     "created_at": datetime.datetime.utcnow()
                 })
 
+                # Create finances document and set default values to 0
+                expenses = {
+                    "food": 0.0,
+                    "housing": 0.0,
+                    "utilities": 0.0,
+                    "transportation": 0.0,
+                    "entertainment": 0.0,
+                    "other": 0.0
+                }
+
+                # Insert finances document with default values for the new user
+                finances_collection.insert_one({
+                    "user_id": users_collection.find_one({"email": new_email})["_id"],
+                    "income": 0.0,
+                    "expenses": expenses,
+                    "total_spending": 0.0,
+                    "remaining": 0.0,
+                })
+
+                total_spending = sum(expenses.values())
+                remaining = 0.0
+
                 st.success("Account created successfully! Please login")
 
                 
