@@ -1,9 +1,11 @@
 import streamlit as st
 import os
 import google.generativeai as genai
+import certifi
 
 #testing Jason's commit
-api_key = os.environ.get("API_KEY")
+api_key = st.secrets["GEMINI_API_KEY"]["api_key"]
+tlsCAFile=certifi.where()
 if not api_key:
     st.error("API key is not set. Please set the API key in your environment variables.")
 else:
