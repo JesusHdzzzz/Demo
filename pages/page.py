@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import certifi
 import google.generativeai as genai
+from pymongo import MongoClient
 
 @st.cache_resource
 def init_connection():
