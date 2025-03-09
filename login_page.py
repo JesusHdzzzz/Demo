@@ -59,7 +59,7 @@ with login_tab:
                         st.session_state.user_email = email
                         #st.session_state.userid = usrID
                         st.success("Login successful!")
-                        st.switch_page("pages/app.py")  # Update with your main page path
+                        st.switch_page("pages/page.py")  # Update with your main page path
                     else:
                         st.error("Incorrect password")
 
