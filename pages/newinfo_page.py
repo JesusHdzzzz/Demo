@@ -14,7 +14,7 @@ st.title("Your Financial Info")
 
 with st.form("fincancial_info"):
     st.subheader("Income")
-    income = float(st.text_input("Your monthly income estimate"))
+    income = st.text_input("Your monthly income estimate")
 
     st.subheader("Monthly Expenditures")
     st.caption("Note: Enter '0' if none spent in area.")
