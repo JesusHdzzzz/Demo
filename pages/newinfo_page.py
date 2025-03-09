@@ -18,41 +18,42 @@ with st.form("fincancial_info"):
 
     st.subheader("Monthly Expenditures")
     st.caption("Note: Enter '0' if none spent in area.")
-    food = float(st.text_input("Food"))
-    housing = float(st.text_input("Rent/Mortgage"))
-    utilities = float(st.text_input("Utilities"))
-    transportation = float(st.text_input("Transportation"))
-    entertainment = float(st.text_input("Entertainment"))
-    other = float(st.text_input("Other"))
+    food = st.text_input("Food")
+    housing = st.text_input("Rent/Mortgage")
+    utilities = st.text_input("Utilities")
+    transportation = st.text_input("Transportation")
+    entertainment = st.text_input("Entertainment")
+    other = st.text_input("Other")
 
     submitted = st.form_submit_button("Done")
 
     if submitted:
         if not all([income, food, housing, utilities, transportation, entertainment, other]):
             st.error("Please fill in all fields.")
-        elif isinstance(food, float) == False or isinstance(housing, float) == False or \
-            isinstance(utilities, float) == False or isinstance(transportation, float) == False or \
-            isinstance(entertainment, float) == False or isinstance(other, float) == False:
+        elif isinstance(float(food), float) == False or isinstance(float(housing), float) == False or \
+                isinstance(float(utilities), float) == False or isinstance(float(transportation), float) == False or \
+                isinstance(float(entertainment), float) == False or isinstance(float(other), float) == False:
             st.error("Please enter only numbers.")
         else:
-            total_spending = food + housing + utilities + transportation + entertainment + other
-            remaining = income - total_spending
+            total_spending = float(food) + float(housing) + float(utilities) + float(transportation) + \
+                                float(entertainment) + float(other)
+            remaining = float(income) - total_spending
             user_data = {
-                "income": income,
-                "food": food,
-                "housing": housing,
-                "utilities": utilities,
-                "transportation": transportation,
-                "entertainment": entertainment,
-                "other": other,
-                "total spending": total_spending,
-                "remaining": remaining
+                "income": float(income),
+                "food": float(food),
+                "housing": float(housing),
+                "utilities": float(utilities),
+                "transportation": float(transportation),
+                "entertainment": float(entertainment),
+                "other": float(other),
+                "total spending": float(total_spending),
+                "remaining": float(remaining)
                 #"created_at": datetime.datetime.utcnow()
             }
 
             try:
                 result = users_collection.insert_one(user_data)
-                st.success(f"User created! ID: {result.inserted_id}")
-                st.switch_page("pages/login_page.py")
+                st.success("Financial info saved!")
+                st.switch_page("pages/page.py")
             except Exception as e:
                 st.error(f"Error saving to database: {e}")
