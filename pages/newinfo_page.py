@@ -3,37 +3,23 @@ from pymongo import MongoClient
 import certifi
 import google.generativeai as genai
 
+connection_status = st.empty()
+
 @st.cache_resource
 def init_connection():
-    try:
-        # Initialize connection with diagnostics
-        client = MongoClient(
-            st.secrets["MONGODB_URI"]["uri"],
-            tlsCAFile=certifi.where(),
-            serverSelectionTimeoutMS=5000  # Fail fast for quicker feedback
-        )
-        
-        # Immediate connection test
-        client.admin.command('ping')
-        st.toast("✅ Successfully connected to MongoDB!", icon="🔗")
-        return client
-        
-    except Exception as e:
-        st.error(f"""
-        **MongoDB Connection Failed**
-        Error: {str(e)}
-        
-        Troubleshooting Steps:
-        1. Verify MongoDB URI in secrets
-        2. Check network access in Atlas
-        3. Confirm internet connection
-        """)
-        st.stop()  # Halt entire app if connection fails
+    return MongoClient(st.secrets["MONGODB_URI"]["uri"],
+    tlsCAFile=certifi.where())  # Halt entire app if connection fails
 
-client = init_connection()
+try:
+    client = init_connection()
+    #st.toast("Connection successful!", icon="✅")
+except ConnectionError as e:
+    #st.toast(f"Connection failed: {str(e)}", icon="🚫")
+    st.stop()
+
 db = client.HackathonX
-users_collection = db.users
 finances_collection = db.finances
+users_collection = db.users
 
 st.title("Your Financial Info")
 
