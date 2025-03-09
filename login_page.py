@@ -18,6 +18,7 @@ except ConnectionError as e:
 
 db = client.HackathonX
 users_collection = db.users
+finances_collection = db.finances
 
 style_heading = 'text-align: center; font-size:80px'
 
@@ -59,7 +60,7 @@ with login_tab:
                         st.session_state.user_email = email
                         #st.session_state.userid = usrID
                         st.success("Login successful!")
-                        st.switch_page("pages/app.py")  # Update with your main page path
+                        st.switch_page("pages/page.py")  # Update with your main page path
                     else:
                         st.error("Incorrect password")
 
@@ -88,8 +89,31 @@ with signup_tab:
                     "password_hash": hashed_pw,
                     "created_at": datetime.datetime.utcnow()
                 })
-                
-                st.success("Account created successfully! Please login.")
+
+                # Create finances document and set default values to 0
+                expenses = {
+                    "food": 0.0,
+                    "housing": 0.0,
+                    "utilities": 0.0,
+                    "transportation": 0.0,
+                    "entertainment": 0.0,
+                    "other": 0.0
+                }
+
+                # Insert finances document with default values for the new user
+                finances_collection.insert_one({
+                    "user_id": users_collection.find_one({"email": new_email})["_id"],
+                    "income": 0.0,
+                    "expenses": expenses,
+                    "total_spending": 0.0,
+                    "remaining": 0.0,
+                })
+
+                total_spending = sum(expenses.values())
+                remaining = 0.0
+
+                st.success("Account created successfully! Please login")
+
                 
             except ValueError as e:
                 st.error(str(e))
