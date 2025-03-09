@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 
-st.title("THE BEST BUDGETING APP!!!")
+st.title("Bobcat Budgeting")
 
 left, center, right = st.columns(3)
 
