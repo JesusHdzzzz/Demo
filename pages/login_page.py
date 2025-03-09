@@ -13,6 +13,15 @@ client = init_connection()
 db = client.HackathonX
 users_collection = db.users
 
+style_heading = 'text-align: center; font-size:80px'
+
+st.markdown(f"<h1 style='{style_heading}'>Bobcat Budgeting</h1>", unsafe_allow_html=True)
+
+st.markdown("\n")
+st.markdown("\n")
+st.markdown("\n")
+st.markdown("\n")
+
 st.title("Login / Sign Up")
 
 if "logged_in" not in st.session_state:
