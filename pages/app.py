@@ -3,7 +3,7 @@ import os
 import google.generativeai as genai
 import certifi
 
-#testing Jason's commit
+#Sidebar Chat START
 api_key = st.secrets["GEMINI_API_KEY"]["api_key"]
 tlsCAFile=certifi.where()
 if not api_key:
@@ -36,6 +36,8 @@ with st.sidebar:
                 st.write(response.text)
         except Exception as e:
             st.error(f"An error occurred: {e}")
+
+#Sidebar Chat END
 
 # if len(prompt) > 10: # Check if prompt:
 #     # st.write("Prompt is longer than 10 characters")
