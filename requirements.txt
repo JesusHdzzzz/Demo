@@ -1,6 +1,7 @@
 google-generativeai
 streamlit
 plotly
+pandas
 pymongo>=4.6.0
 datetime
 certifi>=2023.7.22
