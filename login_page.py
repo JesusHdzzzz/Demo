@@ -48,7 +48,7 @@ with login_tab:
                     st.error("User not found! Please sign up first.")
                 else:
                     # Verify password
-                    if user["password"] == password:
+                    if bcrypt.checkpw(password.encode('utf-8'), user["password_hash"]):
                         st.session_state.logged_in = True
                         st.session_state.user_email = email
                         st.success("Login successful!")
@@ -76,7 +76,6 @@ with signup_tab:
                 
                 # Hash password with bcrypt
                 hashed_pw = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
-                
                 users_collection.insert_one({
                     "email": new_email,
                     "password_hash": hashed_pw,
