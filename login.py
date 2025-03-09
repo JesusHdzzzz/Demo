@@ -1,11 +1,14 @@
 import streamlit as st
 import os
 
-st.title("Bobcat Budgeting")
+left, center, right = st.columns([2, 2, 1], vertical_alignment="bottom", border=True)
 
-left, center, right = st.columns(3)
+style_heading = 'text-align: center'
+style_image = 'display: block; margin-left: auto; margin-right: auto; margin-top: 100px' 
 
-with center:
+with st.container():
+    st.markdown(f"<h1 style='{style_heading}'>Bobcat Budgeting</h1>", unsafe_allow_html=True)
+
     switch_login = st.button('Login')
     if switch_login:
         st.switch_page("pages/login_page.py")
