@@ -8,7 +8,7 @@ def init_connection():
 
 client = init_connection()
 db = client.HackathonX
-user_collection = db.users
+users_collection = db.users
 
 st.title("Your Financial Info")
 
