@@ -2,7 +2,6 @@ import streamlit as st
 import os
 import google.generativeai as genai
 import certifi
-import certifi
 
 #testing Jason's commit
 api_key = st.secrets["GEMINI_API_KEY"]["api_key"]
