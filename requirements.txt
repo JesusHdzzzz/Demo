@@ -1,5 +1,6 @@
 google-generativeai
 streamlit
 plotly
-pymongo
+pymongo>=4.6.0
 datetime
+certifi>=2023.7.22
